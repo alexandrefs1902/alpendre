@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alpendre Hammocks</title>
+<meta name="description" content="Brazilian cotton hammocks hand-woven in Jaguaruana, Ceará. Shipped worldwide from São Paulo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: product page with a buy box beside an illustrated hammock; below it, a to-scale hanging planner is the one interactive centerpiece. */
+:root {
+  --algodao: #F5F6F2;      /* raw cotton */
+  --painel: #EBEDE6;
+  --tinta: #23211D;
+  --tinta-2: #5B5C55;
+  --linha: #D3D6CC;
+  --caju: #B93A22;         /* cashew red, the brand accent */
+  --mar: #2A6886;          /* Jericoacoara sea */
+  --sobre-caju: #FFF8F2;
+  --chao: #B8B2A2;
+  --display: "Gloock", "Georgia", "Times New Roman", serif;
+  --texto: "Hanken Grotesk", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --algodao: #191A17; --painel: #22241F; --tinta: #ECEDE7; --tinta-2: #A9AAA1;
+    --linha: #3A3C35; --caju: #E0664B; --mar: #6FB2D2; --sobre-caju: #1A0E0A; --chao: #55524A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --algodao: #191A17; --painel: #22241F; --tinta: #ECEDE7; --tinta-2: #A9AAA1;
+  --linha: #3A3C35; --caju: #E0664B; --mar: #6FB2D2; --sobre-caju: #1A0E0A; --chao: #55524A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--algodao); color: var(--tinta); font: 400 1.0625rem/1.6 var(--texto); }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1160px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.05; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--mar); outline-offset: 3px; }
+
+/* Top bar */
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 18px; }
+.logo { font-family: var(--display); font-size: 1.6rem; text-decoration: none; }
+.bag { display: inline-flex; align-items: center; gap: 8px; background: none; border: 1px solid var(--linha); border-radius: 999px; padding: 7px 14px; cursor: pointer; font-weight: 600; }
+.bag b { font-variant-numeric: tabular-nums; }
+.ship-note { border-block: 1px solid var(--linha); padding-block: 9px; font-size: 0.92rem; color: var(--tinta-2); text-align: center; }
+
+/* Product */
+.product { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; padding-block: 40px 64px; align-items: start; }
+.stage { background: var(--painel); border-radius: 6px; padding: 28px 18px 18px; display: grid; gap: 10px; }
+.stage svg { width: 100%; height: auto; display: block; }
+.stage figcaption { font-size: 0.9rem; color: var(--tinta-2); text-align: center; }
+
+.buy { display: grid; gap: 22px; }
+.origin { font-size: 0.95rem; color: var(--tinta-2); }
+.buy h1 { font-size: clamp(2.3rem, 4.6vw, 3.4rem); }
+.buy .pitch { font-size: 1.1rem; max-width: 32em; }
+.price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.price strong { font-family: var(--display); font-size: 2.2rem; font-weight: 400; font-variant-numeric: tabular-nums; }
+.price span { color: var(--tinta-2); font-size: 0.95rem; }
+
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; }
+legend { font-weight: 600; padding: 0; margin-bottom: 10px; }
+legend output { font-weight: 400; color: var(--tinta-2); margin-left: 6px; }
+.swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+.swatch { position: relative; }
+.swatch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.swatch span { display: block; width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--algodao); box-shadow: 0 0 0 1px var(--linha); }
+.swatch input:checked + span { box-shadow: 0 0 0 2px var(--tinta); }
+.swatch input:focus-visible + span { outline: 3px solid var(--mar); outline-offset: 3px; }
+
+.options { display: grid; gap: 10px; }
+.option { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 14px 16px; border: 1px solid var(--linha); border-radius: 6px; cursor: pointer; }
+.option:has(input:checked) { border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
+.option input { margin: 4px 0 0; accent-color: var(--caju); }
+.option strong { display: block; font-weight: 600; }
+.option small { color: var(--tinta-2); font-size: 0.92rem; }
+.option .amt { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.add { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--linha); border-radius: 6px; }
+.qty button { background: none; border: 0; width: 42px; height: 100%; min-height: 50px; cursor: pointer; font-size: 1.2rem; }
+.qty output { min-width: 2ch; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cta { flex: 1 1 220px; background: var(--caju); color: var(--sobre-caju); border: 0; border-radius: 6px; padding: 15px 22px; font-weight: 700; font-size: 1.05rem; cursor: pointer; }
+.cta:hover { filter: brightness(1.07); }
+.added { font-size: 0.95rem; color: var(--mar); min-height: 1.6em; font-weight: 600; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; border-top: 1px solid var(--linha); padding-top: 18px; font-size: 0.92rem; color: var(--tinta-2); }
+.facts b { display: block; color: var(--tinta); font-weight: 600; }
+
+/* Sections */
+section.band { padding-block: 72px; border-top: 1px solid var(--linha); }
+.head { display: grid; gap: 12px; max-width: 42em; margin-bottom: 34px; }
+.head h2 { font-size: clamp(2rem, 4vw, 2.9rem); }
+.head p { color: var(--tinta-2); }
+
+/* Hanging planner */
+.planner { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.diagram { background: var(--painel); border-radius: 6px; padding: 16px; overflow-x: auto; }
+.diagram svg { width: 100%; min-width: 420px; height: auto; display: block; }
+.controls { display: grid; gap: 22px; }
+.units { display: inline-flex; border: 1px solid var(--linha); border-radius: 999px; padding: 3px; justify-self: start; }
+.units button { border: 0; background: none; padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 0.92rem; color: var(--tinta-2); }
+.units button[aria-pressed="true"] { background: var(--tinta); color: var(--algodao); }
+.range { display: grid; gap: 8px; }
+.range label { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; }
+.range label output { font-variant-numeric: tabular-nums; }
+.range input { width: 100%; accent-color: var(--mar); }
+.results { margin: 0; display: grid; border: 1px solid var(--linha); border-radius: 6px; }
+.results div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 16px; border-bottom: 1px solid var(--linha); }
+.results div:last-child { border-bottom: 0; }
+.results dt { color: var(--tinta-2); }
+.results dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.planner-note { font-size: 0.92rem; color: var(--tinta-2); }
+
+/* Made by hand */
+.made { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.made h3 { font-size: 1.5rem; margin-bottom: 8px; }
+.made p { color: var(--tinta-2); }
+.made .figure { font-family: var(--display); font-size: 3.4rem; line-height: 1; color: var(--caju); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+
+/* Specs + shipping */
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+.specs { margin: 0; display: grid; }
+.specs div { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--linha); }
+.specs dt { color: var(--tinta-2); }
+.specs dd { margin: 0; font-variant-numeric: tabular-nums; }
+.two h3 { font-size: 1.6rem; margin-bottom: 14px; }
+
+/* FAQ */
+.faq { display: grid; max-width: 760px; }
+.faq details { border-bottom: 1px solid var(--linha); }
+.faq summary { cursor: pointer; padding: 18px 0; font-weight: 600; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-weight: 400; font-size: 1.4rem; line-height: 1; color: var(--tinta-2); }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding-bottom: 18px; color: var(--tinta-2); max-width: 40em; }
+
+footer { border-top: 1px solid var(--linha); padding-block: 28px 40px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; font-size: 0.9rem; color: var(--tinta-2); }
+
+/* Mobile buy bar */
+.buybar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--algodao); border-top: 1px solid var(--linha);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: none; align-items: center; justify-content: space-between; gap: 12px;
+}
+.buybar .t { font-weight: 600; line-height: 1.25; min-width: 0; }
+.buybar .t small { display: block; font-weight: 400; color: var(--tinta-2); }
+.buybar .cta { flex: 0 0 auto; padding: 12px 18px; }
+
+@media (max-width: 920px) {
+  .product { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 24px 48px; }
+  .planner, .two { grid-template-columns: minmax(0, 1fr); }
+  .made { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+@media (max-width: 640px) {
+  .buybar.show { display: flex; }
+  body { padding-bottom: 76px; }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .specs div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .body-fill, .stripe { transition: fill .35s ease, stroke .35s ease; }
+}
+</style>
+</head>
+<body>
+
+<header class="gutter">
+  <div class="wrap bar">
+    <a class="logo" href="#top" id="top">Alpendre</a>
+    <button class="bag" type="button" id="bagBtn" aria-live="polite">Bag <b id="bagCount">0</b></button>
+  </div>
+</header>
+<p class="ship-note gutter">Free DHL shipping on orders over $150 to the US, Canada, the UK and the EU</p>
+
+<main>
+  <div class="gutter">
+    <div class="wrap product">
+      <figure class="stage" style="margin:0">
+        <svg viewBox="0 0 600 380" role="img" aria-labelledby="hamTitle">
+          <title id="hamTitle">Illustration of the hammock in the selected colorway</title>
+          <defs>
+            <clipPath id="bodyClip">
+              <path d="M110 92 Q300 212 490 92 L490 92 Q300 330 110 92 Z"/>
+            </clipPath>
+          </defs>
+          <!-- end loops (punhos) -->
+          <g stroke="var(--tinta-2)" stroke-width="1.4" fill="none" stroke-linecap="round">
+            <path d="M28 40 L110 76"/><path d="M28 40 L110 84"/><path d="M28 40 L110 92"/><path d="M28 40 L110 100"/><path d="M28 40 L110 108"/>
+            <path d="M572 40 L490 76"/><path d="M572 40 L490 84"/><path d="M572 40 L490 92"/><path d="M572 40 L490 100"/><path d="M572 40 L490 108"/>
+          </g>
+          <circle cx="28" cy="40" r="7" fill="none" stroke="var(--tinta)" stroke-width="3"/>
+          <circle cx="572" cy="40" r="7" fill="none" stroke="var(--tinta)" stroke-width="3"/>
+          <!-- body -->
+          <path class="body-fill" id="bodyFill" d="M110 92 Q300 212 490 92 Q300 330 110 92 Z" fill="#EFE7D6"/>
+          <g clip-path="url(#bodyClip)" fill="none" id="stripes"></g>
+          <path d="M110 92 Q300 212 490 92" fill="none" stroke="var(--tinta)" stroke-opacity=".35" stroke-width="1.5"/>
+          <!-- varanda: the lace fringe along the side -->
+          <g id="fringe" stroke="var(--tinta-2)" stroke-width="1" stroke-opacity=".7"></g>
+        </svg>
+        <figcaption id="swatchCaption">Cajú: natural cotton with cashew-red and sea-blue stripes</figcaption>
+      </figure>
+
+      <form class="buy" id="buyForm">
+        <p class="origin">Woven by hand in Jaguaruana, Ceará, Brazil</p>
+        <h1>The Alpendre Hammock</h1>
+        <p class="pitch">A full-size Brazilian hammock in heavy cotton, with the crocheted side lace that Ceará weavers call the varanda. Wide enough to lie across the diagonal, the way it is used in the Northeast.</p>
+
+        <div class="price"><strong id="price">$189</strong><span id="priceNote">Taxes and duties included</span></div>
+
+        <fieldset>
+          <legend>Colorway <output id="colorName">Cajú</output></legend>
+          <div class="swatches">
+            <label class="swatch" title="Cajú"><input type="radio" name="color" value="caju" id="c-caju" checked aria-label="Cajú"><span style="background:conic-gradient(#EFE7D6 0 50%, #B93A22 0 75%, #2A6886 0)"></span></label>
+            <label class="swatch" title="Mar de Jeri"><input type="radio" name="color" value="mar" id="c-mar" aria-label="Mar de Jeri"><span style="background:conic-gradient(#DCE8EC 0 50%, #2A6886 0 75%, #17384A 0)"></span></label>
+            <label class="swatch" title="Cru"><input type="radio" name="color" value="cru" id="c-cru" aria-label="Cru"><span style="background:conic-gradient(#EFE7D6 0 70%, #C9B993 0)"></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>What's in the box</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="kit" value="solo" id="k-solo" checked>
+              <span><strong>Hammock only</strong><small>For walls with hooks already in place</small></span>
+              <span class="amt">$189</span></label>
+            <label class="option"><input type="radio" name="kit" value="kit" id="k-kit">
+              <span><strong>Hammock with hanging kit</strong><small>Two stainless steel hooks, two 3 m tree straps and two carabiners</small></span>
+              <span class="amt">$219</span></label>
+          </div>
+        </fieldset>
+
+        <div class="add">
+          <div class="qty" aria-label="Quantity">
+            <button type="button" id="minus" aria-label="Remove one">−</button>
+            <output id="qty" aria-live="polite">1</output>
+            <button type="button" id="plus" aria-label="Add one">+</button>
+          </div>
+          <button class="cta" type="submit" id="addBtn">Add to bag</button>
+        </div>
+        <p class="added" id="added" aria-live="polite"></p>
+
+        <div class="facts">
+          <p><b>Ships in 2 days</b>From São Paulo, tracked by DHL</p>
+          <p><b>Arrives in 5 to 8 days</b>Business days, most countries</p>
+          <p><b>30-day returns</b>Unused, in the original bag</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="band gutter" id="hang" aria-labelledby="t-hang">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="t-hang">Plan where to hang it</h2>
+        <p>Move the slider to the distance between your two hooks, posts or trees. The drawing is to scale and shows how high to put the hooks so the hammock hangs at a comfortable 30° and sits 45 cm off the floor.</p>
+      </div>
+      <div class="planner">
+        <div class="diagram">
+          <svg id="plan" viewBox="0 0 640 330" role="img" aria-labelledby="planTitle">
+            <title id="planTitle">To-scale drawing of the hammock hung between two anchors</title>
+          </svg>
+        </div>
+        <div class="controls">
+          <div class="units" role="group" aria-label="Units">
+            <button type="button" id="u-m" aria-pressed="true">Meters</button>
+            <button type="button" id="u-ft" aria-pressed="false">Feet</button>
+          </div>
+          <div class="range">
+            <label for="dist">Distance between anchors <output id="distOut">3.5 m</output></label>
+            <input type="range" id="dist" min="2.6" max="5.5" step="0.1" value="3.5">
+          </div>
+          <dl class="results">
+            <div><dt>Hook height</dt><dd id="r-height">—</dd></div>
+            <div><dt>Extra rope per side</dt><dd id="r-rope">—</dd></div>
+            <div><dt>Hang angle</dt><dd id="r-angle">—</dd></div>
+          </dl>
+          <p class="planner-note" id="planNote">Measured from the floor to the hook. Treat it as a starting point, then adjust a few centimeters after the first try.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band gutter" aria-labelledby="t-made">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="t-made">How each one is made</h2>
+        <p>Jaguaruana has woven hammocks for more than a century. Ours come from three family workshops in town, and each hammock passes through the same hands from loom to lace.</p>
+      </div>
+      <div class="made">
+        <div><p class="figure">9</p><h3>Days on the loom</h3><p>The body is woven on a vertical wooden loom, one row at a time, with a tight weave that does not stretch out of shape after the first summer.</p></div>
+        <div><p class="figure">16</p><h3>Pairs of end cords</h3><p>The end loops are braided by hand and tied into the body, so the load spreads across the full width instead of pulling on a few threads.</p></div>
+        <div><p class="figure">1</p><h3>Name on the tag</h3><p>Every hammock carries a cloth tag with the name of the weaver who finished it. Yours arrives with the tag sewn into the lace.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band gutter" aria-labelledby="t-specs">
+    <div class="wrap two">
+      <div>
+        <h3 id="t-specs">Specifications</h3>
+        <dl class="specs">
+          <div><dt>Body</dt><dd>230 × 160 cm (7 ft 7 in × 5 ft 3 in)</dd></div>
+          <div><dt>Total length with loops</dt><dd>360 cm (11 ft 10 in)</dd></div>
+          <div><dt>Material</dt><dd>100% cotton, 4-ply yarn</dd></div>
+          <div><dt>Holds</dt><dd>Up to 150 kg (330 lb)</dd></div>
+          <div><dt>Weight</dt><dd>1.9 kg (4.2 lb)</dd></div>
+          <div><dt>Care</dt><dd>Hand wash cold, dry in the shade</dd></div>
+        </dl>
+      </div>
+      <div>
+        <h3>Shipping and returns</h3>
+        <dl class="specs">
+          <div><dt>Dispatch</dt><dd>Within 2 business days, from São Paulo</dd></div>
+          <div><dt>Delivery</dt><dd>5 to 8 business days with DHL Express</dd></div>
+          <div><dt>Shipping cost</dt><dd>Free over $150, otherwise $24</dd></div>
+          <div><dt>Duties</dt><dd>Included in the price for the US, UK and EU</dd></div>
+          <div><dt>Returns</dt><dd>30 days, unused and in the original bag</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="band gutter" aria-labelledby="t-faq">
+    <div class="wrap">
+      <div class="head"><h2 id="t-faq">Questions we get</h2></div>
+      <div class="faq">
+        <details><summary>Can I use it outdoors?</summary><p>Yes, under a porch or a covered deck. Cotton fades and weakens in constant sun and rain, so take it inside when you are not using it, the same way people do in Ceará.</p></details>
+        <details><summary>Why lie diagonally?</summary><p>Lying across the hammock at an angle flattens the fabric under you, so your back stays straight. The 160 cm width is what makes that possible.</p></details>
+        <details><summary>Will it fit two people?</summary><p>It holds up to 150 kg, which covers two adults sitting. For two people sleeping, we recommend two hammocks.</p></details>
+        <details><summary>Do the colors run in the wash?</summary><p>The yarn is dyed before weaving and rinsed twice at the workshop. Wash it cold and alone the first time.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>Alpendre, Brazilian hammocks</span>
+    <span>Concept project for a portfolio</span>
+  </div>
+</footer>
+
+<div class="buybar" id="buybar" aria-hidden="true">
+  <p class="t">Alpendre Hammock<small id="barSub">Cajú, $189</small></p>
+  <button class="cta" type="button" id="barAdd" tabindex="-1">Add to bag</button>
+</div>
+
+<script>
+// ---------- Product ----------
+const COLORS = {
+  caju: { name: "Cajú", caption: "Cajú: natural cotton with cashew-red and sea-blue stripes", base: "#EFE7D6", stripes: ["#B93A22", "#B93A22", "#2A6886", "#B93A22"] },
+  mar:  { name: "Mar de Jeri", caption: "Mar de Jeri: pale sea-blue cotton with deep blue stripes", base: "#DCE8EC", stripes: ["#2A6886", "#17384A", "#2A6886", "#17384A"] },
+  cru:  { name: "Cru", caption: "Cru: undyed cotton with natural sand stripes", base: "#EFE7D6", stripes: ["#C9B993", "#C9B993", "#C9B993", "#C9B993"] }
+};
+const KITS = { solo: 189, kit: 219 };
+const NS = "http://www.w3.org/2000/svg";
+
+// Stripes follow the curve of the body: quadratic curves between the same ends.
+const stripeG = document.getElementById("stripes");
+const stripeSpots = [0.18, 0.32, 0.5, 0.68, 0.82];
+const stripeEls = stripeSpots.map((t, i) => {
+  const cy = 212 + (330 - 212) * t;
+  const p = document.createElementNS(NS, "path");
+  p.setAttribute("d", `M110 92 Q300 ${cy} 490 92`);
+  p.setAttribute("stroke-width", i === 2 ? 10 : 6);
+  p.setAttribute("class", "stripe");
+  stripeG.appendChild(p);
+  return p;
+});
+
+// Varanda fringe along the bottom edge.
+const fringe = document.getElementById("fringe");
+for (let i = 1; i < 30; i++) {
+  const t = i / 30, x = (1 - t) * (1 - t) * 110 + 2 * (1 - t) * t * 300 + t * t * 490;
+  const y = (1 - t) * (1 - t) * 92 + 2 * (1 - t) * t * 330 + t * t * 92;
+  const l = document.createElementNS(NS, "line");
+  l.setAttribute("x1", x); l.setAttribute("y1", y); l.setAttribute("x2", x); l.setAttribute("y2", y + 22 + (i % 2) * 6);
+  fringe.appendChild(l);
+}
+
+const state = { color: "caju", kit: "solo", qty: 1, bag: 0 };
+const money = n => "$" + n.toLocaleString("en-US");
+
+function renderProduct() {
+  const c = COLORS[state.color];
+  document.getElementById("bodyFill").setAttribute("fill", c.base);
+  stripeEls.forEach((el, i) => el.setAttribute("stroke", c.stripes[i % c.stripes.length]));
+  document.getElementById("colorName").textContent = c.name;
+  document.getElementById("swatchCaption").textContent = c.caption;
+  const total = KITS[state.kit] * state.qty;
+  document.getElementById("price").textContent = money(total);
+  document.getElementById("priceNote").textContent = state.qty > 1 ? `${state.qty} × ${money(KITS[state.kit])}, taxes and duties included` : "Taxes and duties included";
+  document.getElementById("qty").textContent = state.qty;
+  document.getElementById("barSub").textContent = `${c.name}, ${money(total)}`;
+  document.getElementById("bagCount").textContent = state.bag;
+}
+
+document.querySelectorAll('input[name="color"]').forEach(r => r.addEventListener("change", e => { state.color = e.target.value; renderProduct(); }));
+document.querySelectorAll('input[name="kit"]').forEach(r => r.addEventListener("change", e => { state.kit = e.target.value; renderProduct(); }));
+document.getElementById("minus").addEventListener("click", () => { state.qty = Math.max(1, state.qty - 1); renderProduct(); });
+document.getElementById("plus").addEventListener("click", () => { state.qty = Math.min(9, state.qty + 1); renderProduct(); });
+
+function addToBag() {
+  state.bag += state.qty;
+  const c = COLORS[state.color];
+  const what = state.kit === "kit" ? "with hanging kit" : "hammock only";
+  document.getElementById("added").textContent = `Added ${state.qty} × ${c.name}, ${what}, to your bag.`;
+  renderProduct();
+}
+document.getElementById("buyForm").addEventListener("submit", e => { e.preventDefault(); addToBag(); });
+document.getElementById("barAdd").addEventListener("click", addToBag);
+document.getElementById("bagBtn").addEventListener("click", () => {
+  document.getElementById("added").textContent = state.bag ? `Your bag has ${state.bag} item${state.bag > 1 ? "s" : ""}. Checkout is not part of this concept page.` : "Your bag is empty. Pick a colorway and add a hammock.";
+  document.getElementById("buyForm").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+});
+
+// Mobile buy bar: shows once the main button scrolls out of view.
+const bar = document.getElementById("buybar");
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(([en]) => {
+    const show = !en.isIntersecting && en.boundingClientRect.top < 0;
+    bar.classList.toggle("show", show);
+    bar.setAttribute("aria-hidden", show ? "false" : "true");
+    document.getElementById("barAdd").tabIndex = show ? 0 : -1;
+  }).observe(document.getElementById("addBtn"));
+}
+renderProduct();
+
+// ---------- Hanging planner ----------
+// Model: the hammock with someone in it forms two straight runs from each anchor
+// to a low point at seat height. Total length with loops S = 3.6 m.
+// If the anchors are far enough apart, it hangs at 30° and needs extra rope;
+// if they are closer, it hangs steeper with no rope.
+const S = 3.6, SEAT = 0.45, IDEAL = 30 * Math.PI / 180;
+let units = "m";
+
+function solve(D) {
+  let angle, rope;
+  if (D >= S * Math.cos(IDEAL)) { angle = IDEAL; rope = D / (2 * Math.cos(IDEAL)) - S / 2; }
+  else { angle = Math.acos(D / S); rope = 0; }
+  const sag = (D / 2) * Math.tan(angle);
+  return { angle, rope, height: SEAT + sag };
+}
+
+function fmtLen(m) {
+  if (units === "m") return m < 1 ? Math.round(m * 100) + " cm" : m.toFixed(2).replace(/0$/, "") + " m";
+  const inches = Math.round(m / 0.0254), ft = Math.floor(inches / 12), inch = inches % 12;
+  return ft ? `${ft} ft ${inch} in` : `${inch} in`;
+}
+
+const plan = document.getElementById("plan");
+function el(tag, attrs, text) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
+  plan.appendChild(n);
+  return n;
+}
+
+function renderPlan() {
+  const D = parseFloat(document.getElementById("dist").value);
+  const r = solve(D);
+  // drawing: 5.5 m wide max plus margins; 2.4 m tall max
+  const W = 640, H = 330, padX = 40, floorY = 290, scale = (W - 2 * padX) / 5.8;
+  const cx = W / 2, xL = cx - (D / 2) * scale, xR = cx + (D / 2) * scale;
+  const yHook = floorY - r.height * scale, ySeat = floorY - SEAT * scale;
+  while (plan.lastChild && plan.lastChild.nodeName !== "title") plan.removeChild(plan.lastChild);
+
+  // floor
+  el("line", { x1: 12, y1: floorY, x2: W - 12, y2: floorY, stroke: "var(--chao)", "stroke-width": 2 });
+  // posts
+  [xL, xR].forEach(x => el("rect", { x: x - 6, y: Math.min(yHook - 18, floorY - 2.2 * scale), width: 12, height: floorY - Math.min(yHook - 18, floorY - 2.2 * scale), fill: "var(--chao)" }));
+  // runs: rope part then hammock part
+  const runLen = D / (2 * Math.cos(r.angle));
+  const ropeFrac = r.rope / runLen;
+  const pt = (x0, y0, x1, y1, f) => [x0 + (x1 - x0) * f, y0 + (y1 - y0) * f];
+  const [rlx, rly] = pt(xL, yHook, cx, ySeat, ropeFrac);
+  const [rrx, rry] = pt(xR, yHook, cx, ySeat, ropeFrac);
+  if (r.rope > 0.005) {
+    el("line", { x1: xL, y1: yHook, x2: rlx, y2: rly, stroke: "var(--mar)", "stroke-width": 3, "stroke-dasharray": "6 5" });
+    el("line", { x1: xR, y1: yHook, x2: rrx, y2: rry, stroke: "var(--mar)", "stroke-width": 3, "stroke-dasharray": "6 5" });
+  }
+  el("path", { d: `M${rlx} ${rly} L${cx} ${ySeat} L${rrx} ${rry}`, fill: "none", stroke: "var(--caju)", "stroke-width": 6, "stroke-linejoin": "round", "stroke-linecap": "round" });
+  // hooks
+  [xL, xR].forEach(x => el("circle", { cx: x, cy: yHook, r: 5, fill: "var(--algodao)", stroke: "var(--tinta)", "stroke-width": 2.5 }));
+  // height dimension on the left post
+  const dimX = xL - 22;
+  el("line", { x1: dimX, y1: yHook, x2: dimX, y2: floorY, stroke: "var(--tinta-2)", "stroke-width": 1 });
+  el("line", { x1: dimX - 5, y1: yHook, x2: dimX + 5, y2: yHook, stroke: "var(--tinta-2)", "stroke-width": 1 });
+  const hText = el("text", { x: dimX - 8, y: (yHook + floorY) / 2, "text-anchor": "end", "dominant-baseline": "middle", fill: "var(--tinta)", "font-size": 14, "font-weight": 600, "font-family": "var(--texto)" }, fmtLen(r.height));
+  // keep the label inside the drawing
+  if (dimX - 8 - 70 < 0) { hText.setAttribute("text-anchor", "start"); hText.setAttribute("x", xL + 12); }
+  // distance dimension under the floor
+  el("line", { x1: xL, y1: floorY + 18, x2: xR, y2: floorY + 18, stroke: "var(--tinta-2)", "stroke-width": 1 });
+  el("text", { x: cx, y: floorY + 34, "text-anchor": "middle", fill: "var(--tinta)", "font-size": 14, "font-weight": 600, "font-family": "var(--texto)" }, fmtLen(D));
+  // seat height
+  el("line", { x1: cx, y1: ySeat + 4, x2: cx, y2: floorY, stroke: "var(--tinta-2)", "stroke-width": 1, "stroke-dasharray": "2 4" });
+  el("text", { x: cx + 8, y: (ySeat + floorY) / 2 + 4, fill: "var(--tinta-2)", "font-size": 12, "font-family": "var(--texto)" }, "seat " + fmtLen(SEAT));
+
+  // numbers
+  document.getElementById("distOut").textContent = fmtLen(D);
+  document.getElementById("r-height").textContent = fmtLen(r.height);
+  document.getElementById("r-rope").textContent = r.rope > 0.005 ? fmtLen(r.rope) : "None needed";
+  const deg = Math.round(r.angle * 180 / Math.PI);
+  document.getElementById("r-angle").textContent = deg + "°";
+  document.getElementById("planNote").textContent = deg > 40
+    ? "Anchors this close make the hammock hang steep and narrow. If you can, add 40 to 60 cm between them."
+    : "Measured from the floor to the hook. Treat it as a starting point, then adjust a few centimeters after the first try.";
+}
+
+document.getElementById("dist").addEventListener("input", renderPlan);
+function setUnits(u) {
+  units = u;
+  document.getElementById("u-m").setAttribute("aria-pressed", u === "m");
+  document.getElementById("u-ft").setAttribute("aria-pressed", u === "ft");
+  renderPlan();
+}
+document.getElementById("u-m").addEventListener("click", () => setUnits("m"));
+document.getElementById("u-ft").addEventListener("click", () => setUnits("ft"));
+renderPlan();
+</script>
+
+</body>
+</html>
